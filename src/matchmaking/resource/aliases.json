@@ -1,0 +1,205 @@
+{
+  "aliases": {
+    "sfv": {
+      "game": "sfv"
+    },
+    "sf5": {
+      "game": "sfv"
+    },
+    "sc6": {
+      "game": "sc6"
+    },
+    "sfa2": {
+      "game": "sfa"
+    },
+    "sfa3": {
+      "game": "sfa"
+    },
+    "kof98": {
+      "game": "kof98"
+    },
+    "kof98um": {
+      "game": "kof98"
+    },
+    "kof2k2": {
+      "game": "kof2002"
+    },
+    "kof2002um": {
+      "game": "kof2002"
+    },
+    "kof2k2um": {
+      "game": "kof2002"
+    },
+    "sc": {
+      "game": "sc6"
+    },
+    "dbz": {
+      "game": "dbz"
+    },
+    "dbfz": {
+      "game": "dbz"
+    },
+    "dbf": {
+      "game": "dbz"
+    },
+    "db": {
+      "game": "dbz"
+    },
+    "usf4": {
+      "game": "usf4"
+    },
+    "sf4": {
+      "game": "usf4"
+    },
+    "usfiv": {
+      "game": "usf4"
+    },
+    "sfiv": {
+      "game": "usf4"
+    },
+    "ultra": {
+      "game": "usf4"
+    },
+    "st": {
+      "game": "st"
+    },
+    "sf2": {
+      "game": "st"
+    },
+    "ssf2t": {
+      "game": "st"
+    },
+    "3s": {
+      "game": "3s"
+    },
+    "sf3": {
+      "game": "3s"
+    },
+    "sfiii": {
+      "game": "3s"
+    },
+    "3rdstrike": {
+      "game": "3s"
+    },
+    "goat": {
+      "game": "3s"
+    },
+    "thegoat": {
+      "game": "3s"
+    },
+    "mhw": {
+      "game": "mhw"
+    },
+    "monhun": {
+      "game": "mhw"
+    },
+    "mh": {
+      "game": "mhw"
+    },
+    "fc": {
+      "game": "fc"
+    },
+    "fc1": {
+      "game": "fc"
+    },
+    "fc2": {
+      "game": "fc"
+    },
+    "gg": {
+      "game": "gg"
+    },
+    "rev2": {
+      "game": "gg"
+    },
+    "unist": {
+      "game": "unist"
+    },
+    "uniel": {
+      "game": "unist"
+    },
+    "theotherst": {
+      "game": "unist"
+    },
+    "tekken": {
+      "game": "tekken"
+    },
+    "t7": {
+      "game": "tekken"
+    },
+    "tekken7": {
+      "game": "tekken"
+    },
+    "tehran": {
+      "game": "tekken"
+    },
+    "rotuma": {
+      "game": "tekken"
+    },
+    "mvci": {
+      "game": "mvci"
+    },
+    "mvc": {
+      "game": "mvci"
+    },
+    "marvel": {
+      "game": "mvci"
+    },
+    "infinite": {
+      "game": "mvci"
+    },
+    "kof14": {
+      "game": "kof14"
+    },
+    "kof14": {
+      "game": "kof14"
+    },
+    "smash": {
+      "game": "smash"
+    },
+    "ssb": {
+      "game": "smash"
+    },
+    "ssbu": {
+      "game": "smash"
+    },
+    "smesh": {
+      "game": "smash"
+    },
+    "bbxtag": {
+      "game": "bbxtag"
+    },
+    "bbxt": {
+      "game": "bbxtag"
+    },
+    "bbt": {
+      "game": "bbxtag"
+    },
+    "bbtag": {
+      "game": "bbxtag"
+    },
+    "bbx": {
+      "game": "bbxtag"
+    },
+    "tag": {
+      "game": "bbxtag"
+    },
+    "xtag": {
+      "game": "bbxtag"
+    },
+    "mk11": {
+      "game": "mk11"
+    },
+    "m11": {
+      "game": "mk11"
+    },
+    "mk": {
+      "game": "mk11"
+    },
+    "samsho": {
+      "game": "samsho"
+    },
+    "fexl": {
+      "game": "fexl"
+    }
+  }
+}

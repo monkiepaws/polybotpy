@@ -1,0 +1,151 @@
+{
+  "games": {
+    "sfv": {
+      "title": "Street Fighter V",
+      "aliases": ["sf5"],
+      "platforms": ["ps4", "pc"],
+      "defaultPlatform": "pc",
+      "message": "Another fight is coming your way!"
+    },
+    "st": {
+      "title": "Super Turbo",
+      "aliases": ["sf2", "ssf2t"],
+      "platforms": ["ps4", "pc", "fc"],
+      "defaultPlatform": "pc",
+      "message": "Here comes a new challenger!"
+    },
+    "sfa": {
+      "title": "Street Fighter Alpha 2/3",
+      "aliases": ["sfa2", "sfa3"],
+      "platforms": ["pc", "fc"],
+      "defaultPlatform": "fc",
+      "message": "Now, fight a new rival!"
+    },
+    "3s": {
+      "title": "3rd Strike",
+      "aliases": ["sf3", "sfiii", "3rdstrike", "goat", "thegoat"],
+      "platforms": ["ps4", "pc", "fc"],
+      "defaultPlatform": "pc",
+      "message": "Now, fight a new rival!"
+    },
+    "usf4": {
+      "title": "Ultra Street Fighter 4",
+      "aliases": ["sf4", "usfiv", "sfiv", "ultra"],
+      "platforms": ["ps4", "pc", "360", "ps3"],
+      "defaultPlatform": "pc",
+      "message": "Here comes a new challenger!"
+    },
+    "fc": {
+      "title": "Fightcade",
+      "aliases": ["fc1", "fc2"],
+      "platforms": ["pc"],
+      "defaultPlatform": "pc",
+      "message": "Here comes a new challenger!"
+    },
+    "dbz": {
+      "title": "Dragonball FighterZ",
+      "aliases": ["dbfz", "dbf", "db"],
+      "platforms": ["ps4", "pc", "xbox", "switch"],
+      "defaultPlatform": "pc",
+      "message": "Here comes a mighty warrior!"
+    },
+    "gg": {
+      "title": "Guilty Gear Xrd: Rev2",
+      "aliases": ["rev2"],
+      "platforms": ["ps4", "pc"],
+      "defaultPlatform": "pc",
+      "message": "HERE COMES DAREDEVIL"
+    },
+    "unist": {
+      "title": "Under Nigh... The other ST",
+      "aliases": ["uniel", "theotherst"],
+      "platforms": ["ps4", "pc"],
+      "defaultPlatform": "pc",
+      "message": "A new sacrifice has come to you!"
+    },
+    "mhw": {
+      "title": "Monster Hunter World",
+      "aliases": ["monhun", "mh"],
+      "platforms": ["ps4", "pc"],
+      "defaultPlatform": "pc",
+      "message": "...mmm, so tasty!"
+    },
+    "tekken": {
+      "title": "Tekken 7",
+      "aliases": ["t7", "tekken7", "tehran", "rotuma"],
+      "platforms": ["ps4", "pc", "xbox"],
+      "defaultPlatform": "pc",
+      "message": "New challenger? Get ready for the next battle!"
+    },
+    "sc6": {
+      "title": "SoulCalibur 6",
+      "aliases": ["sc"],
+      "platforms": ["ps4", "pc", "xbox"],
+      "defaultPlatform": "pc",
+      "message": "A battle of destiny!"
+    },
+    "mvci": {
+      "title": "Marvel vs Capcom: Infinite",
+      "aliases": ["mvc", "marvel", "infinite"],
+      "platforms": ["ps4", "pc", "xbox"],
+      "defaultPlatform": "pc",
+      "message": "Here comes a new challenger!"
+    },
+    "kof98": {
+      "title": "King of Fighters 98 (UM)",
+      "aliases": ["kof98", "kof98um"],
+      "platforms": ["pc", "fc"],
+      "defaultPlatform": "fc",
+      "message": "Here comes a new challenger!"
+    },
+    "kof2002": {
+      "title": "King of Fighters 2002 (UM)",
+      "aliases": ["kof2k2", "kof2002um", "kof2k2um"],
+      "platforms": ["pc", "fc"],
+      "defaultPlatform": "fc",
+      "message": "Here comes a new challenger!"
+    },
+    "kof14": {
+      "title": "King of Fighters 14",
+      "aliases": ["kof14"],
+      "platforms": ["ps4", "pc"],
+      "defaultPlatform": "pc",
+      "message": "Here comes a new challenger!"
+    },
+    "smash": {
+      "title": "Super Smash Bros Ultimate",
+      "aliases": ["ssb", "ssbu", "smesh"],
+      "platforms": ["switch"],
+      "defaultPlatform": "switch",
+      "message": "A new foe has appeared!"
+    },
+    "bbxtag": {
+      "title": "BlazBlue x Tag Battle",
+      "aliases": ["bbtag", "bbxt", "bbx", "bbt", "xtag", "tag"],
+      "platforms": ["pc", "ps4", "switch"],
+      "defaultPlatform": "pc",
+      "message": "...is now on the way!"
+    },
+    "mk11": {
+      "title": "Mortal Kombat 11",
+      "aliases": ["m11", "mk"],
+      "platforms": ["pc", "ps4", "switch", "xbox"],
+      "defaultPlatform": "pc",
+      "message": "...you're next."
+    },
+    "samsho": {
+      "title": "Samurai Shodown",
+      "aliases": [],
+      "platforms": ["pc", "ps4", "switch", "xbox"],
+      "defaultPlatform": "pc",
+      "message": "Here comes a new challenger!"
+    },
+    "fexl": {
+      "title": "Fighting EX Layer",
+      "aliases": [],
+      "platforms": ["pc", "ps4"],
+      "defaultPlatform": "pc",
+      "message": "Here comes a new challenger!"
+    }
+  }
+}

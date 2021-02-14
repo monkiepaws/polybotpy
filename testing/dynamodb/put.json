@@ -1,0 +1,14 @@
+{
+  "TableName": "WP_Beacons",
+  "Item": {
+    "UniqueId": { "S": "123456789-sfv-ps4-1" },
+    "TypeName": { "S": "Beacon" },
+    "GameName": { "S": "sfv" },
+    "PlatformName": { "S": "ps4" },
+    "GamePlatformCombination": { "S":  "sfv-ps4" },
+    "StartTime": { "N": "1" },
+    "EndTime": { "N": "900000000" },
+    "UserId": { "S": "123456789" },
+    "Username": { "S": "Polydeukes" }
+  }
+}

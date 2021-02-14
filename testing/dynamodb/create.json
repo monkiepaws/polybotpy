@@ -1,0 +1,218 @@
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "UniqueId",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "TypeName",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "UserId",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "Username",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "GamePlatformCombination",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "GameName",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "PlatformName",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "StartTime",
+      "AttributeType": "N"
+    },
+    {
+      "AttributeName": "EndTime",
+      "AttributeType": "N"
+    }
+  ],
+  "TableName": "WP_Beacons",
+  "KeySchema": [
+    {
+      "AttributeName": "UniqueId",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "StartTime",
+      "KeyType": "RANGE"
+    }
+  ],
+  "GlobalSecondaryIndexes": [
+    {
+      "IndexName": "AllAvailableBeacons",
+      "KeySchema": [
+        {
+          "AttributeName": "TypeName",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "EndTime",
+          "KeyType": "RANGE"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "INCLUDE",
+        "NonKeyAttributes": [
+          "UserId",
+          "Username",
+          "GameName",
+          "PlatformName",
+          "StartTime",
+          "EndTime"
+        ]
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 1,
+        "WriteCapacityUnits": 1
+      }
+    },
+    {
+      "IndexName": "AvailableBeaconsByGamePlatform",
+      "KeySchema": [
+        {
+          "AttributeName": "GamePlatformCombination",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "EndTime",
+          "KeyType": "RANGE"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "INCLUDE",
+        "NonKeyAttributes": [
+          "UserId",
+          "Username",
+          "GameName",
+          "PlatformName",
+          "StartTime",
+          "EndTime"
+        ]
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 1,
+        "WriteCapacityUnits": 1
+      }
+    },
+    {
+      "IndexName": "BeaconsByGameName",
+      "KeySchema": [
+        {
+          "AttributeName": "GameName",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "EndTime",
+          "KeyType": "RANGE"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "INCLUDE",
+        "NonKeyAttributes": [
+          "UserId",
+          "Username",
+          "GameName",
+          "PlatformName",
+          "StartTime",
+          "EndTime"
+        ]
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 1,
+        "WriteCapacityUnits": 1
+      }
+    },
+    {
+      "IndexName": "BeaconsByPlatformName",
+      "KeySchema": [
+        {
+          "AttributeName": "PlatformName",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "EndTime",
+          "KeyType": "RANGE"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "INCLUDE",
+        "NonKeyAttributes": [
+          "UserId",
+          "Username",
+          "GameName",
+          "PlatformName",
+          "StartTime",
+          "EndTime"
+        ]
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 1,
+        "WriteCapacityUnits": 1
+      }
+    },
+    {
+      "IndexName": "UsersById",
+      "KeySchema": [
+        {
+          "AttributeName": "UserId",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "Username",
+          "KeyType": "RANGE"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "KEYS_ONLY"
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 1,
+        "WriteCapacityUnits": 1
+      }
+    },
+    {
+      "IndexName": "BeaconsByUserId",
+      "KeySchema": [
+        {
+          "AttributeName": "UserId",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "EndTime",
+          "KeyType": "RANGE"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "INCLUDE",
+        "NonKeyAttributes": [
+          "UserId",
+          "Username",
+          "GameName",
+          "PlatformName",
+          "GamePlatformCombination",
+          "StartTime",
+          "EndTime"
+        ]
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 1,
+        "WriteCapacityUnits": 1
+      }
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 1,
+    "WriteCapacityUnits": 1
+  }
+}
