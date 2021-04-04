@@ -5,8 +5,8 @@ from typing import Dict, Optional, Sequence
 import aioboto3
 from boto3.dynamodb.conditions import Key
 
-from src.matchmaking.beacons import BeaconBase, Game, Platform, WaitTime
-from src.matchmaking.dataaccess import BeaconDataAccessBase
+from ..beacons import BeaconBase, Game, Platform, WaitTime
+from ..dataaccess import BeaconDataAccessBase
 
 
 class DynamoDbQueryParams:

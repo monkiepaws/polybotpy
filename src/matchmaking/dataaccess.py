@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Sequence
 
-from src.matchmaking.beacons import BeaconBase
+from matchmaking.beacons import BeaconBase
 
 
 class BeaconDataAccessBase(ABC):

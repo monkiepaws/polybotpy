@@ -13,10 +13,10 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from src.matchmaking.beacondynamodb.beacondb import BeaconDataAccessDynamoDb
-from src.matchmaking.matchmaking import Matchmaking
-from src.subscribe import Subscribe
-from src.where import Where
+from matchmaking.beacondynamodb.beacondb import BeaconDataAccessDynamoDb
+from matchmaking.matchmaking import Matchmaking
+from subscribe import Subscribe
+from where import Where
 
 logging.basicConfig(
     # filename="{:%Y-%m-%d}.log".format(datetime.now()),
