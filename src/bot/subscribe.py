@@ -165,7 +165,7 @@ class SubRole:
     @property
     def is_ok(self) -> bool:
         """Return True if the role is allowed by the bot, False otherwise."""
-        return self.no_permissions and self.below_me
+        return self.no_permissions and self.below_me and self.is_not_everyone
 
     @property
     def no_permissions(self) -> bool:
@@ -181,6 +181,12 @@ class SubRole:
     def below_me(self) -> bool:
         """Return True if role is below the bot's position, False otherwise."""
         return self.role.position < self.my_top_role
+
+    @property
+    def is_not_everyone(self) -> bool:
+        """Return True if the role is not the @everyone role,
+        False otherwise."""
+        return self.role.name != "@everyone"
 
 
 class RoleService:
