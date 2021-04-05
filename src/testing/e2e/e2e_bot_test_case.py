@@ -73,7 +73,7 @@ class E2EBotTestCase(unittest.TestCase):
         command_prefix="?"
     )
     # The Discord bot under test.
-    polybot = bot.PolyBot.instance(command_prefix="$")
+    polybot = bot.PolyBot.instance(command_prefix="!")
     # Convenience attribute of all bots used in this test case.
     bots = [polybot, e2e_bot]
 

@@ -257,18 +257,19 @@ class Subscribe(commands.Cog):
         self.bot: commands.Bot = bot
         self.max_args: int = max_args
 
-    @commands.group()
-    async def sub(self, ctx: Context):
+    @commands.command()
+    async def sub(self, ctx: Context, *requested_roles: SubRole):
         """Parent of subscribe commands. Run 'list' if sub-command not
         provided.
 
         Discord usage:    !sub
 
         """
-        if ctx.invoked_subcommand is None:
+        if requested_roles:
+            return await self.add(ctx, *requested_roles)
+        else:
             return await self.list(ctx)
 
-    @sub.command()
     async def list(self, ctx: Context):
         """Sub-command. List all available roles in the guild.
 
@@ -282,7 +283,6 @@ class Subscribe(commands.Cog):
                              author=ctx.author)
         await ctx.send(embed=msg)
 
-    @sub.command(aliases=("+",))
     async def add(self, ctx: Context, *requested_roles: SubRole):
         """Sub-command. Add a sequence of roles to the author if valid.
 
@@ -295,7 +295,6 @@ class Subscribe(commands.Cog):
                            action="added",
                            func=RoleService.add)
 
-    @sub.command(aliases=("-",))
     async def remove(self, ctx: Context, *requested_roles: SubRole):
         """Sub-command. Remove a sequence of roles from an author if
         valid.
@@ -308,6 +307,13 @@ class Subscribe(commands.Cog):
                            title_end="💔",
                            action="removed",
                            func=RoleService.remove)
+
+    @commands.command()
+    async def unsub(self, ctx: Context, *requested_roles: SubRole):
+        if requested_roles:
+            return await self.remove(ctx, *requested_roles)
+        else:
+            return await self.list(ctx)
 
     async def process(self,
                       ctx: Context,
