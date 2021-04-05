@@ -184,9 +184,9 @@ class PolyBot(MPBotBase):
         message: discord.Message = ctx.message
         match = self.allowed_chars.fullmatch(message.content)
         if match is None:
-            await ctx.send("No match")
             return False
-        return True
+        else:
+            return True
 
 
 # def main():

@@ -23,7 +23,7 @@ class AddSingleRoleTest(SubscribeTest):
         return "Subscribe should add a single role."
 
     async def arrange(self) -> str:
-        return f"{self.prefix}sub add chun"
+        return f"{self.prefix}sub chun"
 
     async def act(self) -> Sequence[discord.Role]:
         return self.fetch_own_roles()
@@ -38,7 +38,7 @@ class RemoveSingleRoleTest(SubscribeTest):
         return "Subscribe should remove a single role"
 
     async def arrange(self) -> str:
-        return f"{self.prefix}sub remove chun"
+        return f"{self.prefix}unsub chun"
 
     async def act(self) -> Sequence[discord.Role]:
         return self.fetch_own_roles()
@@ -53,7 +53,7 @@ class AddMultipleRolesTest(SubscribeTest):
         return "Subscribe should add multiple roles."
 
     async def arrange(self) -> str:
-        return f"{self.prefix}sub add chun newrole"
+        return f"{self.prefix}sub chun newrole"
 
     async def act(self) -> Sequence[discord.Role]:
         return self.fetch_own_roles()
@@ -68,7 +68,7 @@ class RemoveMultipleRolesTest(SubscribeTest):
         return "Subscribe should remove multiple roles."
 
     async def arrange(self) -> str:
-        return f"{self.prefix}sub remove chun newrole"
+        return f"{self.prefix}unsub chun newrole"
 
     async def act(self) -> Sequence[discord.Role]:
         return self.fetch_own_roles()
@@ -83,7 +83,7 @@ class DoNotAddRoleWithPermissionsTest(SubscribeTest):
         return "Subscribe should not allow adding a role with permissions."
 
     async def arrange(self) -> str:
-        return f"{self.prefix}sub add karin"
+        return f"{self.prefix}sub karin"
 
     async def act(self) -> Sequence[discord.Role]:
         return self.fetch_own_roles()
@@ -98,7 +98,7 @@ class DoNotAddRoleWithHigherPositionTest(SubscribeTest):
         return "Subscribe should not add a role with higher role position."
 
     async def arrange(self) -> str:
-        return f"{self.prefix}sub add highrole"
+        return f"{self.prefix}sub highrole"
 
     async def act(self) -> Sequence[discord.Role]:
         return self.fetch_own_roles()
@@ -113,7 +113,7 @@ class ListReturnsRolesWithNoPermissionsTest(SubscribeTest):
         return "Subscribe should list roles with no permissions."
 
     async def arrange(self) -> str:
-        return f"{self.prefix}sub list"
+        return f"{self.prefix}sub"
 
     async def act(self) -> Sequence[discord.Role]:
         # Get a cleaned description from Polybot's embed message.
