@@ -1,9 +1,15 @@
 import abc
+import os
 import unittest
 from typing import Dict, Sequence, Type
 
+import src.bot.bot as bot
 import src.bot.matchmaking.beacondynamodb.beacondb as beacondb
 import src.testing.common as common
+
+
+# must load environment file for later use.
+bot.load_environment()
 
 
 class DataAccessTest(common.MPIntegrationTest[common.A, common.B], abc.ABC):
@@ -40,9 +46,10 @@ class DataAccessTestCase(unittest.TestCase):
 
     # Data access instance to test.
     db: beacondb.BeaconDataAccessDynamoDb = beacondb.BeaconDataAccessDynamoDb(
-        "WP_Beacons",
-        "ap-southeast-2",
-        "http://localhost:8000"
+        table_name=os.getenv("DYNAMO_DB_TABLE_NAME"),
+        region=os.getenv("DYNAMO_DB_REGION"),
+        endpoint=os.getenv("DYNAMO_DB_ENDPOINT"),
+        profile=os.getenv("DYNAMO_DB_AWS_PROFILE")
     )
 
     def __init__(self, *args, **kwargs):

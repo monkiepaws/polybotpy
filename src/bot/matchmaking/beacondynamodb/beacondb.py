@@ -129,6 +129,7 @@ class BeaconDataAccessDynamoDb(BeaconDataAccessBase):
                  table_name: str,
                  region: str,
                  endpoint: str,
+                 profile: str,
                  *args, **kwargs):
         """Initialise Beacon DynamoDb access.
 
@@ -142,6 +143,7 @@ class BeaconDataAccessDynamoDb(BeaconDataAccessBase):
         self.table_name = table_name
         self.region = region
         self.endpoint = endpoint
+        self.profile = profile
 
     async def list(self) -> Sequence[BeaconBase]:
         params = DynamoDbQueryParams.list()
@@ -177,7 +179,7 @@ class BeaconDataAccessDynamoDb(BeaconDataAccessBase):
         return len(current_beacons) > 0
 
     def _get_resource(self):
-        session = aioboto3.session.Session(profile_name="polybotuser")
+        session = aioboto3.session.Session(profile_name=self.profile)
         return session.resource("dynamodb",
                                 region_name=self.region,
                                 endpoint_url=self.endpoint)

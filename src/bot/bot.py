@@ -25,6 +25,14 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 
+def load_environment():
+    """Load environment variables from .env file."""
+    env_path = Path(__file__).resolve().parent.parent.parent.joinpath(
+        '.env')
+    str_path = str(env_path)
+    load_dotenv(dotenv_path=str_path)
+
+
 class MPBotBase(commands.Bot, abc.ABC):
     """A subclass of commands.Bot with additions for use in Polybot."""
     def __init__(self,
@@ -87,10 +95,7 @@ class MPBotBase(commands.Bot, abc.ABC):
     @staticmethod
     def mp_load_environment():
         """Load environment variables from .env file."""
-        env_path = Path(__file__).resolve().parent.parent.parent.joinpath(
-            '.env')
-        str_path = str(env_path)
-        load_dotenv(dotenv_path=str_path)
+        load_environment()
 
     @property
     def mp_discord_client_token(self) -> str:
@@ -149,9 +154,10 @@ class PolyBot(MPBotBase):
         self.add_cog(
             matchmaking.Matchmaking(self,
                         request=beacondb.BeaconDataAccessDynamoDb(
-                            "WP_Beacons",
-                            "ap-southeast-2",
-                            "http://localhost:8000"
+                            table_name=os.getenv("DYNAMO_DB_TABLE_NAME"),
+                            region=os.getenv("DYNAMO_DB_REGION"),
+                            endpoint=os.getenv("DYNAMO_DB_ENDPOINT"),
+                            profile=os.getenv("DYNAMO_DB_AWS_PROFILE")
                         )
             )
         )
