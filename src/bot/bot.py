@@ -122,7 +122,7 @@ class PolyBot(MPBotBase):
 
         """
         super(PolyBot, self).__init__(*args, **kwargs)
-        self.allowed_chars: re.Pattern[str] = re.compile(r'^[\w $.]+$')
+        self.allowed_chars: re.Pattern[str] = re.compile(r'^[\w !.]+$')
 
     @classmethod
     def instance(cls, command_prefix: str, *args, **kwargs) -> MPBotBase:
