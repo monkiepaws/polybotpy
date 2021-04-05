@@ -129,7 +129,7 @@ class BeaconDataAccessDynamoDb(BeaconDataAccessBase):
                  table_name: str,
                  region: str,
                  endpoint: str,
-                 profile: str,
+                 profile: Optional[str],
                  *args, **kwargs):
         """Initialise Beacon DynamoDb access.
 
@@ -143,7 +143,10 @@ class BeaconDataAccessDynamoDb(BeaconDataAccessBase):
         self.table_name = table_name
         self.region = region
         self.endpoint = endpoint
-        self.profile = profile
+        if profile == "default":
+            self.profile = None
+        else:
+            self.profile = profile
 
     async def list(self) -> Sequence[BeaconBase]:
         params = DynamoDbQueryParams.list()
