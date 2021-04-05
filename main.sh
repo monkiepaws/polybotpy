@@ -1,3 +1,3 @@
-source "$PWD/venv/bin/activate"
-python "$PWD/main.py"
+source "$POLYBOT_PATH/venv/bin/activate"
+python "$POLYBOT_PATH/main.py"
 deactivate
