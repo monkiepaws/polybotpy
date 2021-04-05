@@ -14,7 +14,7 @@ class TestGamesList(unittest.TestCase):
              "`WP Matchmaking\n"
              "All SFV Beacons\n"
              "\n"
-             "🏮 SFV    Test Dummy Name    1h 29m  PC   \n"
+             "🏮 SFV    Test Dummy Name    1h 29m  XPLAY\n"
              "🏮 ST     Test Dummy Name    12h 29m PS4  \n`"
             ),
         ]

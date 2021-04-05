@@ -3,8 +3,8 @@
     "sfv": {
       "title": "Street Fighter V",
       "aliases": ["sf5"],
-      "platforms": ["ps4", "pc"],
-      "defaultPlatform": "pc",
+      "platforms": ["xplay"],
+      "defaultPlatform": "xplay",
       "message": "Another fight is coming your way!"
     },
     "st": {
