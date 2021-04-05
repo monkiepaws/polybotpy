@@ -1,18 +1,16 @@
+import abc
 import unittest
-from abc import ABC
 from typing import Dict, Sequence, Type
 
-import testing.common
-from src.matchmaking.beacondynamodb.beacondb \
-    import BeaconDataAccessDynamoDb
-from testing.common import A, B
+import src.bot.matchmaking.beacondynamodb.beacondb as beacondb
+import src.testing.common as common
 
 
-class DataAccessTest(testing.common.MPIntegrationTest[A, B], ABC):
+class DataAccessTest(common.MPIntegrationTest[common.A, common.B], abc.ABC):
     """Test specific for accessing Beacon data from DynamoDb."""
-    def __init__(self, db: BeaconDataAccessDynamoDb, *args, **kwargs):
+    def __init__(self, db: beacondb.BeaconDataAccessDynamoDb, *args, **kwargs):
         super(DataAccessTest, self).__init__(*args, **kwargs)
-        self.db: BeaconDataAccessDynamoDb = db
+        self.db: beacondb.BeaconDataAccessDynamoDb = db
 
     async def _setup(self) -> None:
         """Delete all items that exist in test database before testing."""
@@ -41,7 +39,7 @@ class DataAccessTestCase(unittest.TestCase):
     """TestCase specific for testing Beacon access from DynamoDb."""
 
     # Data access instance to test.
-    db: BeaconDataAccessDynamoDb = BeaconDataAccessDynamoDb(
+    db: beacondb.BeaconDataAccessDynamoDb = beacondb.BeaconDataAccessDynamoDb(
         "WP_Beacons",
         "ap-southeast-2",
         "http://localhost:8000"

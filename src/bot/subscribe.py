@@ -362,4 +362,4 @@ class Subscribe(commands.Cog):
 
         """
         return f"{ctx.author.mention}, no roles to " \
-               f"{ctx.command.value}."
+               f"{ctx.command.name}."

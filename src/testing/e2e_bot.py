@@ -3,15 +3,13 @@ from __future__ import annotations
 import logging
 from typing import Optional
 
-import discord
-
-from src.bot import MPBotBase
+import src.bot.bot as bot
 
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger("e2e_bot")
 
 
-class E2EBot(MPBotBase):
+class E2EBot(bot.MPBotBase):
     """Discord bot for end-to-end testing of Polybot."""
 
     _instance: Optional[E2EBot] = None

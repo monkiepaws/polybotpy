@@ -1,9 +1,8 @@
 import datetime
 import unittest
 
-from src.matchmaking.beacons import BadArgument, BeaconBase, Game, \
-    load_platforms, Platform, WaitTime
-from testing.common import async_test, create_beacon
+import src.bot.matchmaking.beacons as beacons
+import src.testing.common as common
 
 test_games_list = {
     "sfv": {
@@ -72,19 +71,19 @@ test_aliases = {
     }
 }
 
-test_platforms = load_platforms(test_games_list)
+test_platforms = beacons.load_platforms(test_games_list)
 
 
 class TestGame(unittest.TestCase):
     def test_list(self):
         test_cases = [
-            (None, Game.default_list),
+            (None, beacons.Game.default_list),
             (test_games_list, test_games_list)
         ]
 
         for case, expected in test_cases:
             with self.subTest(case=case):
-                game = Game.from_str(
+                game = beacons.Game.from_str(
                     arg="st",
                     provided_game_list=case
                 )
@@ -93,29 +92,29 @@ class TestGame(unittest.TestCase):
 
     def test_aliases(self):
         test_cases = [
-            (None, Game.default_alias_list),
+            (None, beacons.Game.default_alias_list),
             (test_aliases, test_aliases)
         ]
 
         for case, expected in test_cases:
             with self.subTest(case=case):
-                game = Game.from_str(
+                game = beacons.Game.from_str(
                     arg="st",
                     provided_aliases=case
                 )
                 actual = game.alias_list
                 self.assertEqual(expected, actual)
 
-    @async_test
+    @common.async_test
     async def test_convert(self):
         expected = "st"
-        game = await Game.convert(None, expected)
+        game = await beacons.Game.convert(None, expected)
         actual = game.name
         self.assertEqual(expected, actual)
 
     def test_from_str(self):
         expected = "st"
-        game = Game.from_str(
+        game = beacons.Game.from_str(
             arg="st",
             provided_game_list=test_games_list,
             provided_aliases=test_aliases
@@ -125,8 +124,8 @@ class TestGame(unittest.TestCase):
 
     def test_from_str_raises_exception_when_given_bad_argument(self):
         arg = "nonsense"
-        with self.assertRaises(BadArgument):
-            Game.from_str(
+        with self.assertRaises(beacons.BadArgument):
+            beacons.Game.from_str(
                 arg=arg,
                 provided_game_list=test_games_list,
                 provided_aliases=test_aliases
@@ -140,13 +139,14 @@ class TestGame(unittest.TestCase):
 
         for case, expected in test_cases:
             with self.subTest(case=case):
-                actual = Game._obj_or_default(*case)
+                actual = beacons.Game._obj_or_default(*case)
                 self.assertEqual(expected, actual)
 
     def test___eq__(self):
         test_cases = [
-            ((Game.from_str("st"), Game.from_str("st")), True),
-            ((Game.from_str("st"), Game.from_str("sfv")), False)
+            ((beacons.Game.from_str("st"), beacons.Game.from_str("st")), True),
+            ((beacons.Game.from_str("st"), beacons.Game.from_str("sfv")),
+             False)
         ]
 
         for case, expected in test_cases:
@@ -157,41 +157,41 @@ class TestGame(unittest.TestCase):
 
 
 class TestWaitTime(unittest.TestCase):
-    @async_test
+    @common.async_test
     async def test_convert(self):
         expected = 12.0
-        wait_time = await WaitTime.convert(None, expected)
+        wait_time = await beacons.WaitTime.convert(None, expected)
         actual = wait_time.value
         self.assertEqual(expected, actual)
 
     def test_from_float(self):
         test_cases = [
-            (WaitTime.min - 0.01, WaitTime.min),
-            (WaitTime.max + 0.01, WaitTime.max),
-            (WaitTime.min + 1, WaitTime.min + 1),
-            (WaitTime.max - 1, WaitTime.max - 1)
+            (beacons.WaitTime.min - 0.01, beacons.WaitTime.min),
+            (beacons.WaitTime.max + 0.01, beacons.WaitTime.max),
+            (beacons.WaitTime.min + 1, beacons.WaitTime.min + 1),
+            (beacons.WaitTime.max - 1, beacons.WaitTime.max - 1)
         ]
 
         for case, expected in test_cases:
             with self.subTest(case=case):
-                wait_time = WaitTime.from_float(case)
+                wait_time = beacons.WaitTime.from_float(case)
                 actual = wait_time.value
                 self.assertAlmostEqual(expected, actual)
 
     def test_from_float_raises_bad_argument_exception(self):
-        with self.assertRaises(BadArgument):
-            WaitTime.from_float("text")
+        with self.assertRaises(beacons.BadArgument):
+            beacons.WaitTime.from_float("text")
 
     def test_from_timestamps(self):
         test_cases = [
             ((0, 3600), 1.0),
-            ((3600, 0), WaitTime.min)
+            ((3600, 0), beacons.WaitTime.min)
         ]
 
         for case, expected in test_cases:
             with self.subTest(case=case):
                 start_timestamp, end_timestamp = case
-                wait_time = WaitTime.from_timestamps(
+                wait_time = beacons.WaitTime.from_timestamps(
                     start_timestamp,
                     end_timestamp
                 )
@@ -201,26 +201,30 @@ class TestWaitTime(unittest.TestCase):
     def test_from_minutes(self):
         test_cases = [
             (60, 1.0),
-            (WaitTime.min * 60, WaitTime.min),
-            (WaitTime.max * 60, WaitTime.max)
+            (beacons.WaitTime.min * 60, beacons.WaitTime.min),
+            (beacons.WaitTime.max * 60, beacons.WaitTime.max)
         ]
 
         for case, expected in test_cases:
             with self.subTest(case=case):
-                wait_time = WaitTime.from_minutes(case)
+                wait_time = beacons.WaitTime.from_minutes(case)
                 actual = wait_time.value
                 self.assertAlmostEqual(expected, actual)
 
     def test_minutes(self):
         expected = 60
-        wait_time = WaitTime.from_minutes(expected)
+        wait_time = beacons.WaitTime.from_minutes(expected)
         actual = wait_time.minutes
         self.assertEqual(expected, actual)
 
     def test___eq__(self):
         test_cases = [
-            ((WaitTime.from_minutes(60), WaitTime.from_minutes(60)), True),
-            ((WaitTime.from_minutes(60), WaitTime.from_minutes(120)), False)
+            ((beacons.WaitTime.from_minutes(60), beacons.WaitTime.from_minutes(
+                60)),
+             True),
+            ((beacons.WaitTime.from_minutes(60), beacons.WaitTime.from_minutes(
+                120)),
+             False)
         ]
 
         for case, expected in test_cases:
@@ -231,20 +235,20 @@ class TestWaitTime(unittest.TestCase):
 
 
 class TestPlatform(unittest.TestCase):
-    @async_test
+    @common.async_test
     async def test_convert(self):
         expected = "ps4"
-        platform = await Platform.convert(None, expected)
+        platform = await beacons.Platform.convert(None, expected)
         actual = platform.value
         self.assertEqual(expected, actual)
 
     def test_list(self):
         test_cases = [
-            (Platform.from_str(
+            (beacons.Platform.from_str(
                 arg="pc",
                 platform_list=None
-            ), Platform.default_list),
-            (Platform.from_str(
+            ), beacons.Platform.default_list),
+            (beacons.Platform.from_str(
                 arg="pc",
                 platform_list=test_platforms
             ), test_platforms)
@@ -257,11 +261,11 @@ class TestPlatform(unittest.TestCase):
 
     def test_from_str(self):
         test_cases = [
-            (Platform.from_str(
+            (beacons.Platform.from_str(
                 arg="pc",
                 platform_list=None
-            ), ("pc", Platform.default_list)),
-            (Platform.from_str(
+            ), ("pc", beacons.Platform.default_list)),
+            (beacons.Platform.from_str(
                 arg="pc",
                 platform_list=test_platforms
             ), ("pc", test_platforms))
@@ -276,21 +280,27 @@ class TestPlatform(unittest.TestCase):
                 self.assertTrue(expected_list is actual_list)
 
     def test_from_str_raises_bad_argument_exception(self):
-        test_cases = [test_platforms, Platform.default_list]
+        test_cases = [test_platforms, beacons.Platform.default_list]
 
         for case in test_cases:
             with self.subTest(case=case):
-                with self.assertRaises(BadArgument):
-                    Platform.from_str(
+                with self.assertRaises(beacons.BadArgument):
+                    beacons.Platform.from_str(
                         arg="nonsense",
                         platform_list=case
                     )
 
     def test___eq__(self):
         test_cases = [
-            ((Platform.from_str("pc"), Platform.from_str("pc")), True),
-            ((Platform.from_str("xbox"), Platform.from_str("xbox")), True),
-            ((Platform.from_str("pc"), Platform.from_str("ps4")), False)
+            ((beacons.Platform.from_str("pc"), beacons.Platform.from_str(
+                "pc")),
+             True),
+            ((beacons.Platform.from_str("xbox"), beacons.Platform.from_str(
+                "xbox")),
+             True),
+            ((beacons.Platform.from_str("pc"), beacons.Platform.from_str(
+                "ps4")),
+             False)
         ]
 
         for case, expected in test_cases:
@@ -302,14 +312,14 @@ class TestPlatform(unittest.TestCase):
 
 class TestBeaconBase(unittest.TestCase):
     def test___eq___returns_true(self):
-        b1 = create_beacon()
+        b1 = common.create_beacon()
 
-        b2 = BeaconBase.from_dict({
+        b2 = beacons.BeaconBase.from_dict({
             "user_id": 1234567890,
             "username": "Test Dummy Name",
-            "game": Game.from_str("st"),
-            "wait_time": WaitTime.from_float(12.0),
-            "platform": Platform.from_str("pc"),
+            "game": beacons.Game.from_str("st"),
+            "wait_time": beacons.WaitTime.from_float(12.0),
+            "platform": beacons.Platform.from_str("pc"),
             "start": datetime.datetime.fromtimestamp(b1.start_timestamp,
                                                      datetime.timezone.utc)
         })
@@ -318,14 +328,14 @@ class TestBeaconBase(unittest.TestCase):
         self.assertTrue(actual)
 
     def test___eq___compare_user_id_returns_false(self):
-        b1 = create_beacon()
+        b1 = common.create_beacon()
 
-        b2 = BeaconBase.from_dict({
+        b2 = beacons.BeaconBase.from_dict({
             "user_id": 123456789,
             "username": "Test Dummy Name",
-            "game": Game.from_str("st"),
-            "wait_time": WaitTime.from_float(12.0),
-            "platform": Platform.from_str("pc"),
+            "game": beacons.Game.from_str("st"),
+            "wait_time": beacons.WaitTime.from_float(12.0),
+            "platform": beacons.Platform.from_str("pc"),
             "start": datetime.datetime.fromtimestamp(b1.start_timestamp,
                                                      datetime.timezone.utc)
         })
@@ -334,13 +344,13 @@ class TestBeaconBase(unittest.TestCase):
         self.assertFalse(actual)
 
     def test_full_equality(self):
-        start_time = datetime.datetime.now(datetime.timezone.utc)\
+        start_time = datetime.datetime.now(datetime.timezone.utc) \
             .replace(microsecond=0)
-        b1 = create_beacon(start=start_time)
-        b2 = create_beacon(start=start_time)
+        b1 = common.create_beacon(start=start_time)
+        b2 = common.create_beacon(start=start_time)
 
-        wait_time = WaitTime.from_minutes(60)
-        b3 = BeaconBase.with_wait_time(beacon=b2, wait_time=wait_time)
+        wait_time = beacons.WaitTime.from_minutes(60)
+        b3 = beacons.BeaconBase.with_wait_time(beacon=b2, wait_time=wait_time)
 
         actual1 = b1.full_equality(b2)
         actual2 = b2.full_equality(b3)
@@ -354,7 +364,7 @@ class TestBeaconBase(unittest.TestCase):
         delta = datetime.timedelta(seconds=3600.0)
         start_timestamp = dt.timestamp()
         end_timestamp = (dt + delta).timestamp()
-        beacon = create_beacon(start=dt, waiting_time=1.0)
+        beacon = common.create_beacon(start=dt, waiting_time=1.0)
 
         start_actual = beacon.start_timestamp
         end_actual = beacon.end_timestamp
@@ -364,16 +374,18 @@ class TestBeaconBase(unittest.TestCase):
     def test_platform_or_default_returns_default_if_given_none_or_other(self):
         test_cases = [
             (None, "pc"),
-            (Platform.from_str(arg="ps3", platform_list=test_platforms), "pc")
+            (beacons.Platform.from_str(arg="ps3",
+                                       platform_list=test_platforms),
+             "pc")
         ]
-        game = Game.from_str(arg="st",
-                             provided_game_list=test_games_list,
-                             provided_aliases=test_aliases)
+        game = beacons.Game.from_str(arg="st",
+                                     provided_game_list=test_games_list,
+                                     provided_aliases=test_aliases)
 
         for case in test_cases:
             with self.subTest(case=case):
                 platform, expected = case
-                actual = BeaconBase.platform_or_default(
+                actual = beacons.BeaconBase.platform_or_default(
                     platform=platform,
                     game=game
                 )
@@ -381,15 +393,15 @@ class TestBeaconBase(unittest.TestCase):
 
     def test_platform_or_default_returns_given_platform_if_correct(self):
         expected = "ps4"
-        platform = Platform.from_str(
+        platform = beacons.Platform.from_str(
             arg=expected,
             platform_list=test_platforms
         )
-        game = Game.from_str(arg="st",
-                             provided_game_list=test_games_list,
-                             provided_aliases=test_aliases)
+        game = beacons.Game.from_str(arg="st",
+                                     provided_game_list=test_games_list,
+                                     provided_aliases=test_aliases)
 
-        actual = BeaconBase.platform_or_default(
+        actual = beacons.BeaconBase.platform_or_default(
             platform=platform,
             game=game
         )
@@ -408,7 +420,7 @@ class TestBeaconBase(unittest.TestCase):
         for case in test_cases:
             dt_param, expected = case
             with self.subTest(case=case):
-                actual = BeaconBase.datetime_or_default(dt_param)
+                actual = beacons.BeaconBase.datetime_or_default(dt_param)
                 delta_limit = datetime.timedelta(seconds=10)
                 self.assertAlmostEqual(
                     expected,
@@ -418,28 +430,30 @@ class TestBeaconBase(unittest.TestCase):
 
     def test_from_dict(self):
         start_time = datetime.datetime.now(datetime.timezone.utc)
-        expected = create_beacon(start=start_time)
+        expected = common.create_beacon(start=start_time)
         beacon_dict = {
             "user_id": expected.user_id,
             "username": expected.username,
-            "game": Game.from_str(expected.game_name),
-            "wait_time": WaitTime.from_float(expected.minutes_available / 60),
-            "platform": Platform.from_str(expected.platform),
+            "game": beacons.Game.from_str(expected.game_name),
+            "wait_time": beacons.WaitTime.from_float(
+                expected.minutes_available /
+                60),
+            "platform": beacons.Platform.from_str(expected.platform),
             "start": expected._start_datetime
         }
-        beacon = BeaconBase.from_dict(beacon_dict)
+        beacon = beacons.BeaconBase.from_dict(beacon_dict)
         actual = expected.full_equality(beacon)
         self.assertTrue(actual)
 
     def test_with_wait_time(self):
-        start_time = datetime.datetime.now(datetime.timezone.utc)\
+        start_time = datetime.datetime.now(datetime.timezone.utc) \
             .replace(microsecond=0)
-        beacon = create_beacon(start=start_time)
+        beacon = common.create_beacon(start=start_time)
         minutes = 15
-        wait_time = WaitTime.from_minutes(minutes)
+        wait_time = beacons.WaitTime.from_minutes(minutes)
         delta = datetime.timedelta(minutes=minutes)
         expected_end_timestamp = (start_time + delta).timestamp()
 
-        actual = BeaconBase.with_wait_time(beacon, wait_time)
+        actual = beacons.BeaconBase.with_wait_time(beacon, wait_time)
         self.assertEqual(beacon, actual)  # checking equality for non-time attr
         self.assertEqual(expected_end_timestamp, actual.end_timestamp)

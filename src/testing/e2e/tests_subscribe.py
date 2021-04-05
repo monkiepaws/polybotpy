@@ -5,11 +5,12 @@ from typing import Sequence
 
 import discord
 
-from testing.common import async_test
-from testing.e2e.e2e_bot_test_case import E2EBotTest, E2EBotTestCase
+import src.testing.common as common
+import src.testing.e2e.e2e_bot_test_case as e2e_bot_test_case
 
 
-class SubscribeTest(E2EBotTest[str, Sequence[discord.Role]], ABC):
+class SubscribeTest(e2e_bot_test_case.E2EBotTest[str, Sequence[
+    discord.Role]], ABC):
     """Specific subclass of E2EBotTest for testing Subscribe cog."""
     def fetch_own_roles(self):
         """Return a sequence of roles that an author of a message possesses."""
@@ -144,24 +145,24 @@ class ListReturnsRolesWithNoPermissionsTest(SubscribeTest):
         return len(self.actual) == 0
 
 
-class TestSubscribe(E2EBotTestCase):
-    @async_test
+class TestSubscribe(e2e_bot_test_case.E2EBotTestCase):
+    @common.async_test
     async def test_add_adds_and_removes_single_role_if_valid(self):
         await self.run_tests(AddSingleRoleTest, RemoveSingleRoleTest)
 
-    @async_test
+    @common.async_test
     async def test_add_adds_and_removes_multiple_roles_if_valid(self):
         await self.run_tests(AddMultipleRolesTest, RemoveMultipleRolesTest)
 
-    @async_test
+    @common.async_test
     async def test_add_does_not_add_role_with_higher_position(self):
         await self.run_tests(DoNotAddRoleWithHigherPositionTest)
 
-    @async_test
+    @common.async_test
     async def test_add_does_not_add_role_with_permissions(self):
         await self.run_tests(DoNotAddRoleWithPermissionsTest)
 
-    @async_test
+    @common.async_test
     async def test_list_returns_roles_with_no_permissions(self):
         await self.run_tests(ListReturnsRolesWithNoPermissionsTest)
 
