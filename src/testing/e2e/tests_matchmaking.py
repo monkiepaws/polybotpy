@@ -1,10 +1,10 @@
 from abc import ABC
 
-from testing.e2e.e2e_bot_test_case import E2EBotTest, E2EBotTestCase
-from testing.common import async_test
+import src.testing.e2e.e2e_bot_test_case as e2e_bot_test_case
+import src.testing.common as common
 
 
-class MatchmakingTest(E2EBotTest[str, str], ABC):
+class MatchmakingTest(e2e_bot_test_case.E2EBotTest[str, str], ABC):
     pass
 
 
@@ -42,7 +42,7 @@ class StopBeaconsTest(MatchmakingTest):
                f"** gl;hf! ** 🎉" in self.actual
 
 
-class TestMatchmaking(E2EBotTestCase):
-    @async_test
+class TestMatchmaking(e2e_bot_test_case.E2EBotTestCase):
+    @common.async_test
     async def test_add_and_stop_games(self):
         await self.run_tests(AddSingleBeaconTest, StopBeaconsTest)

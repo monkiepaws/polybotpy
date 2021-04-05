@@ -3,7 +3,7 @@ import datetime
 from abc import ABC, abstractmethod
 from typing import Generic, Optional, Tuple, TypeVar
 
-import src.matchmaking.matchmaking as matchmaking
+import src.bot.matchmaking.beacons as beacons
 
 A = TypeVar("A")
 B = TypeVar("B")
@@ -24,14 +24,14 @@ def create_beacon(game_name: str = "st",
                   platform_name: str = "pc",
                   start: datetime.datetime = None,
                   user_id: int = 1234567890
-                  ) -> matchmaking.BeaconBase:
+                  ) -> beacons.BeaconBase:
     """Return a BeaconBase instance. Convenience function."""
-    return matchmaking.BeaconBase.from_dict({
+    return beacons.BeaconBase.from_dict({
         "user_id": user_id,
         "username": "Test Dummy Name",
-        "game": matchmaking.Game.from_str(game_name),
-        "wait_time": matchmaking.WaitTime.from_float(waiting_time),
-        "platform": matchmaking.Platform.from_str(platform_name),
+        "game": beacons.Game.from_str(game_name),
+        "wait_time": beacons.WaitTime.from_float(waiting_time),
+        "platform": beacons.Platform.from_str(platform_name),
         "start": start
     })
 
@@ -40,7 +40,7 @@ def create_beacon_and_now_datetime(
         game_name: str = "st",
         waiting_time: float = 12.0,
         platform_name: str = "pc"
-) -> Tuple[matchmaking.BeaconBase, datetime.datetime]:
+) -> Tuple[beacons.BeaconBase, datetime.datetime]:
     """Return a BeaconBase instance with start time to current time."""
     now = datetime.datetime.now(datetime.timezone.utc) \
         .replace(microsecond=0)

@@ -1,17 +1,15 @@
-import asyncio
+import abc
 import unittest
-from abc import ABC
 from typing import Any, Optional, Type
 
 from discord import Message, TextChannel
 
-import src.bot
-import testing.common
-import testing.e2e.e2e_bot as e2e
-from testing.common import A, B
+import src.bot.bot as bot
+import src.testing.e2e_bot as e2e_bot
+import src.testing.common as common
 
 
-class E2EBotTest(testing.common.MPIntegrationTest[A, B], ABC):
+class E2EBotTest(common.MPIntegrationTest[common.A, common.B], abc.ABC):
     """Test that's specific for end-to-end testing in a Discord environment.
 
     Attributes:
@@ -50,7 +48,7 @@ class E2EBotTest(testing.common.MPIntegrationTest[A, B], ABC):
 
     async def _arrange(self) -> None:
         message = await self.channel.send(await self.arrange())
-        await asyncio.sleep(self.wait_time)
+        await common.asyncio.sleep(self.wait_time)
         self.message = await self.channel.fetch_message(message.id)
 
     async def _react(self) -> None:
@@ -68,14 +66,14 @@ class E2EBotTestCase(unittest.TestCase):
     """TestCase for end-to-end testing in a Discord environment."""
 
     # Current event loop.
-    loop = asyncio.get_event_loop()
+    loop = common.asyncio.get_event_loop()
     # The Client Discord bot for this Test Case.
-    e2e_bot = e2e.E2EBot.instance(
+    e2e_bot = e2e_bot.E2EBot.instance(
         secret_name="E2E_DISCORD_CLIENT_SECRET",
         command_prefix="?"
     )
     # The Discord bot under test.
-    polybot = src.bot.PolyBot.instance(command_prefix="$")
+    polybot = bot.PolyBot.instance(command_prefix="$")
     # Convenience attribute of all bots used in this test case.
     bots = [polybot, e2e_bot]
 
@@ -86,7 +84,7 @@ class E2EBotTestCase(unittest.TestCase):
     def setUpClass(cls) -> None:
         for bot in cls.bots:
             if not bot.is_ready():
-                asyncio.Task(
+                common.asyncio.Task(
                     coro=bot.start(bot.mp_discord_client_token),
                     loop=cls.loop
                 )

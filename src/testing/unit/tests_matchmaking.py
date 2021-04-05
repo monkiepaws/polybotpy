@@ -1,15 +1,15 @@
 import unittest
 
-from src.matchmaking.matchmaking import GamesList
-from testing.common import create_beacon
+import src.bot.matchmaking.matchmaking as matchmaking
+import src.testing.common as common
 
 
 class TestGamesList(unittest.TestCase):
     def test_create(self):
         test_cases = [
             (([
-                  create_beacon("sfv", 1.5, "pc"),
-                  create_beacon("st", 12.5, "ps4")
+                  common.create_beacon("sfv", 1.5, "pc"),
+                  common.create_beacon("st", 12.5, "ps4")
               ], "All SFV"),
              "`WP Matchmaking\n"
              "All SFV Beacons\n"
@@ -22,7 +22,8 @@ class TestGamesList(unittest.TestCase):
         for case, expected in test_cases:
             with self.subTest(case=case):
                 beacons, title = case
-                actual = GamesList.create(beacons=beacons, title=title)
+                actual = matchmaking.GamesList.create(beacons=beacons,
+                                                       title=title)
                 self.assertEqual(expected, actual)
 
     def test_take(self):
@@ -35,7 +36,7 @@ class TestGamesList(unittest.TestCase):
         for case, expected in test_cases:
             with self.subTest(case=case):
                 string, n = case
-                actual = GamesList.take(string, n)
+                actual = matchmaking.GamesList.take(string, n)
                 self.assertEqual(expected, actual)
 
     def test__time_from_mins(self):
@@ -47,19 +48,19 @@ class TestGamesList(unittest.TestCase):
 
         for case, expected in test_cases:
             with self.subTest(case=case):
-                actual = GamesList._time_from_mins(mins=case)
+                actual = matchmaking.GamesList._time_from_mins(mins=case)
                 self.assertEqual(expected, actual)
 
     def test_entry(self):
         test_cases = [
             (
-                create_beacon("st", 12.0, "pc"),
+                common.create_beacon("st", 12.0, "pc"),
                 "🏮 ST     Test Dummy Name    11h 59m PC   \n"
             ),
         ]
 
         for case, expected in test_cases:
             with self.subTest(case=case):
-                sut = GamesList()
+                sut = matchmaking.GamesList()
                 actual = sut.entry(case)
                 self.assertEqual(expected, actual)

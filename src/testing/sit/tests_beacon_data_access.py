@@ -3,15 +3,13 @@ import unittest
 from abc import ABC
 from typing import Sequence
 
-from src.matchmaking.beacondynamodb import beacondb
-from src.matchmaking.beacons import BeaconBase, Game, Platform, WaitTime
-from testing.common import A, B, async_test, create_beacon, \
-    create_beacon_and_now_datetime
-from testing.sit.data_access_test_case \
-    import DataAccessTest, DataAccessTestCase
+import src.bot.matchmaking.beacondynamodb.beacondb as beacondb
+import src.bot.matchmaking.beacons as beacons
+import src.testing.common as common
+import src.testing.sit.data_access_test_case as datest
 
 
-class BeaconDataAccessTest(DataAccessTest[A, B], ABC):
+class BeaconDataAccessTest(datest.DataAccessTest[common.A, common.B], ABC):
     """Concrete class specific for Beacon data access testing.
     Currently no extra functionality.
 
@@ -24,17 +22,17 @@ class BeaconDataAccessTest(DataAccessTest[A, B], ABC):
 
 
 class AddBeaconAndQueryBeaconTest(BeaconDataAccessTest[
-                                      BeaconBase,
-                                      Sequence[BeaconBase]
+                                      beacons.BeaconBase,
+                                      Sequence[beacons.BeaconBase]
                                   ]):
     @property
     def description(self) -> str:
         return "Should be able to add a Beacon to database."
 
-    async def arrange(self) -> BeaconBase:
-        return create_beacon()
+    async def arrange(self) -> beacons.BeaconBase:
+        return common.create_beacon()
 
-    async def act(self) -> Sequence[BeaconBase]:
+    async def act(self) -> Sequence[beacons.BeaconBase]:
         await self.db.add([self.arranged_value])
         return await self.db.list()
 
@@ -43,17 +41,17 @@ class AddBeaconAndQueryBeaconTest(BeaconDataAccessTest[
 
 
 class AddDuplicateBeaconsTest(BeaconDataAccessTest[
-                                  BeaconBase,
-                                  Sequence[BeaconBase]
+                                  beacons.BeaconBase,
+                                  Sequence[beacons.BeaconBase]
                               ]):
     @property
     def description(self) -> str:
         return "Adding a beacon again updates current in database."
 
-    async def arrange(self) -> BeaconBase:
-        return create_beacon()
+    async def arrange(self) -> beacons.BeaconBase:
+        return common.create_beacon()
 
-    async def act(self) -> Sequence[BeaconBase]:
+    async def act(self) -> Sequence[beacons.BeaconBase]:
         await self.db.add([self.arranged_value])
         await self.db.add([self.arranged_value])
         return await self.db.list()
@@ -63,20 +61,20 @@ class AddDuplicateBeaconsTest(BeaconDataAccessTest[
 
 
 class AddMultipleBeaconsTest(BeaconDataAccessTest[
-                                 Sequence[BeaconBase],
-                                 Sequence[BeaconBase]
+                                 Sequence[beacons.BeaconBase],
+                                 Sequence[beacons.BeaconBase]
                              ]):
     @property
     def description(self) -> str:
         return "Should be able to add multiple matchmaking to a database."
 
-    async def arrange(self) -> Sequence[BeaconBase]:
-        return [create_beacon(),
-                create_beacon(game_name="mk11",
+    async def arrange(self) -> Sequence[beacons.BeaconBase]:
+        return [common.create_beacon(),
+                common.create_beacon(game_name="mk11",
                               waiting_time=6.0,
                               platform_name="ps4")]
 
-    async def act(self) -> Sequence[BeaconBase]:
+    async def act(self) -> Sequence[beacons.BeaconBase]:
         await self.db.add(self.arranged_value)
         return await self.db.list()
 
@@ -87,22 +85,22 @@ class AddMultipleBeaconsTest(BeaconDataAccessTest[
 
 
 class StopByUserIdTest(BeaconDataAccessTest[
-                           Sequence[BeaconBase],
-                           Sequence[BeaconBase]
+                           Sequence[beacons.BeaconBase],
+                           Sequence[beacons.BeaconBase]
                        ]):
     @property
     def description(self) -> str:
         return "Should be able to delete all matchmaking by a user in a db."
 
-    async def arrange(self) -> Sequence[BeaconBase]:
-        b1 = create_beacon()
-        b2 = create_beacon(game_name="usf4",
+    async def arrange(self) -> Sequence[beacons.BeaconBase]:
+        b1 = common.create_beacon()
+        b2 = common.create_beacon(game_name="usf4",
                            waiting_time=6.0,
                            platform_name="pc")
         b2.user_id = "DUMMY"
         return [b1, b2]
 
-    async def act(self) -> Sequence[BeaconBase]:
+    async def act(self) -> Sequence[beacons.BeaconBase]:
         await self.db.add(self.arranged_value)
         await self.db.stop_by_user_id(self.arranged_value[1])
         return await self.db.list_by_user_id(self.arranged_value[1])
@@ -112,16 +110,16 @@ class StopByUserIdTest(BeaconDataAccessTest[
 
 
 class ListReturnsValidBeacons(BeaconDataAccessTest[
-                                  Sequence[BeaconBase],
-                                  Sequence[BeaconBase]
+                                  Sequence[beacons.BeaconBase],
+                                  Sequence[beacons.BeaconBase]
                               ]):
     @property
     def description(self) -> str:
         return "Should return matchmaking with valid timeframes."
 
-    async def arrange(self) -> Sequence[BeaconBase]:
-        b1 = create_beacon()
-        b2 = create_beacon(game_name="mk11",
+    async def arrange(self) -> Sequence[beacons.BeaconBase]:
+        b1 = common.create_beacon()
+        b2 = common.create_beacon(game_name="mk11",
                            waiting_time=6.0,
                            platform_name="ps4")
         b2._start_datetime = datetime.datetime.now(datetime.timezone.utc)
@@ -129,7 +127,7 @@ class ListReturnsValidBeacons(BeaconDataAccessTest[
         b2.minutes_available = 15
         return [b1, b2]
 
-    async def act(self) -> Sequence[BeaconBase]:
+    async def act(self) -> Sequence[beacons.BeaconBase]:
         await self.db.add(self.arranged_value)
         return await self.db.list()
 
@@ -138,20 +136,20 @@ class ListReturnsValidBeacons(BeaconDataAccessTest[
 
 
 class ListForGameReturnsCorrectBeacons(BeaconDataAccessTest[
-                                           Sequence[BeaconBase],
-                                           Sequence[BeaconBase]
+                                           Sequence[beacons.BeaconBase],
+                                           Sequence[beacons.BeaconBase]
                                        ]):
     @property
     def description(self) -> str:
         return "Should return matchmaking only for requested game."
 
-    async def arrange(self) -> Sequence[BeaconBase]:
-        return [create_beacon(),
-                create_beacon(game_name="3s",
+    async def arrange(self) -> Sequence[beacons.BeaconBase]:
+        return [common.create_beacon(),
+                common.create_beacon(game_name="3s",
                               waiting_time=6.0,
                               platform_name="pc")]
 
-    async def act(self) -> Sequence[BeaconBase]:
+    async def act(self) -> Sequence[beacons.BeaconBase]:
         await self.db.add(self.arranged_value)
         return await self.db.list_for_game(self.arranged_value[1])
 
@@ -160,22 +158,22 @@ class ListForGameReturnsCorrectBeacons(BeaconDataAccessTest[
 
 
 class ListByUserIdReturnsCorrectBeacons(BeaconDataAccessTest[
-                                            Sequence[BeaconBase],
-                                            Sequence[BeaconBase]
+                                            Sequence[beacons.BeaconBase],
+                                            Sequence[beacons.BeaconBase]
                                         ]):
     @property
     def description(self) -> str:
         return "Should return matchmaking only for requested user."
 
-    async def arrange(self) -> Sequence[BeaconBase]:
-        b1 = create_beacon()
-        b2 = create_beacon(game_name="usf4",
+    async def arrange(self) -> Sequence[beacons.BeaconBase]:
+        b1 = common.create_beacon()
+        b2 = common.create_beacon(game_name="usf4",
                            waiting_time=6.0,
                            platform_name="pc")
         b2.user_id = "DUMMY"
         return [b1, b2]
 
-    async def act(self) -> Sequence[BeaconBase]:
+    async def act(self) -> Sequence[beacons.BeaconBase]:
         await self.db.add(self.arranged_value)
         return await self.db.list_by_user_id(self.arranged_value[1])
 
@@ -183,21 +181,21 @@ class ListByUserIdReturnsCorrectBeacons(BeaconDataAccessTest[
         return self.arranged_value[1] in self.actual and len(self.actual) == 1
 
 
-class TestBeaconDataAccess(DataAccessTestCase):
-    @async_test
+class TestBeaconDataAccess(datest.DataAccessTestCase):
+    @common.async_test
     async def test_add_and_query_a_beacon(self):
         await self.run_tests(AddBeaconAndQueryBeaconTest)
 
-    @async_test
+    @common.async_test
     async def test_add_duplicates(self):
         await self.run_tests(AddDuplicateBeaconsTest)
 
-    @async_test
+    @common.async_test
     async def test_add_multiple(self):
         await self.run_tests(AddMultipleBeaconsTest,
                              StopByUserIdTest)
 
-    @async_test
+    @common.async_test
     async def test_list_returns_valid_beacons(self):
         await self.run_tests(ListReturnsValidBeacons,
                              ListForGameReturnsCorrectBeacons,
@@ -206,7 +204,7 @@ class TestBeaconDataAccess(DataAccessTestCase):
 
 class TestBeaconDataAccessFunctions(unittest.TestCase):
     def test_item_from_beacon(self):
-        beacon = create_beacon()
+        beacon = common.create_beacon()
 
         expected = {
             "UniqueId": f"1234567890-st-pc-{beacon.start_timestamp}",
@@ -225,8 +223,8 @@ class TestBeaconDataAccessFunctions(unittest.TestCase):
         self.assertTrue(actual == expected)
 
     def test_items_from_beacons(self):
-        b1, now = create_beacon_and_now_datetime()
-        b2 = create_beacon(game_name="mk11",
+        b1, now = common.create_beacon_and_now_datetime()
+        b2 = common.create_beacon(game_name="mk11",
                            waiting_time=6.0,
                            platform_name="pc",
                            start=now)
@@ -259,7 +257,7 @@ class TestBeaconDataAccessFunctions(unittest.TestCase):
         self.assertEqual(actual, [expected1, expected2])
 
     def test_item_to_dict(self):
-        beacon, now = create_beacon_and_now_datetime()
+        beacon, now = common.create_beacon_and_now_datetime()
 
         item = {
             "UniqueId": f"1234567890-st-pc-{beacon.start_timestamp}",
@@ -276,12 +274,12 @@ class TestBeaconDataAccessFunctions(unittest.TestCase):
         expected = {
             "user_id": beacon.user_id,
             "username": beacon.username,
-            "game": Game.from_str(beacon.game_name),
-            "wait_time": WaitTime.from_timestamps(
+            "game": beacons.Game.from_str(beacon.game_name),
+            "wait_time": beacons.WaitTime.from_timestamps(
                 start_timestamp=beacon.start_timestamp,
                 end_timestamp=beacon.end_timestamp
             ),
-            "platform": Platform.from_str(beacon.platform),
+            "platform": beacons.Platform.from_str(beacon.platform),
             "start": beacon._start_datetime
         }
 
@@ -289,7 +287,7 @@ class TestBeaconDataAccessFunctions(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_beacon_from_item(self):
-        beacon, now = create_beacon_and_now_datetime()
+        beacon, now = common.create_beacon_and_now_datetime()
 
         item = {
             "UniqueId": f"1234567890-st-pc-{beacon.start_timestamp}",
@@ -308,8 +306,8 @@ class TestBeaconDataAccessFunctions(unittest.TestCase):
         self.assertTrue(actual)
 
     def test_beacons_from_items(self):
-        b1, now = create_beacon_and_now_datetime()
-        b2 = create_beacon(game_name="mk11",
+        b1, now = common.create_beacon_and_now_datetime()
+        b2 = common.create_beacon(game_name="mk11",
                            waiting_time=6.0,
                            platform_name="pc",
                            start=now)
@@ -355,14 +353,14 @@ class TestDataDynamoDbQueryParams(unittest.TestCase):
 
     def test_list_for_game_does_not_throw(self):
         try:
-            beacon = create_beacon()
+            beacon = common.create_beacon()
             beacondb.DynamoDbQueryParams.list_for_game(beacon)
         except Exception:
             self.fail("list_for_game() raised an exception.")
 
     def test_list_by_user_id_does_not_throw(self):
         try:
-            beacon = create_beacon()
+            beacon = common.create_beacon()
             beacondb.DynamoDbQueryParams.list_by_user_id(beacon)
         except Exception:
             self.fail("list_by_user_id() raised an exception.")

@@ -5,7 +5,6 @@ import asyncio
 import logging
 import os
 import re
-from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
@@ -13,10 +12,11 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from matchmaking.beacondynamodb.beacondb import BeaconDataAccessDynamoDb
-from matchmaking.matchmaking import Matchmaking
-from subscribe import Subscribe
-from where import Where
+import src.bot.matchmaking.beacons as beacons
+import src.bot.matchmaking.beacondynamodb.beacondb as beacondb
+import src.bot.matchmaking.matchmaking as matchmaking
+import src.bot.subscribe as subscribe
+import src.bot.where as where
 
 logging.basicConfig(
     # filename="{:%Y-%m-%d}.log".format(datetime.now()),
@@ -87,7 +87,8 @@ class MPBotBase(commands.Bot, abc.ABC):
     @staticmethod
     def mp_load_environment():
         """Load environment variables from .env file."""
-        env_path = Path(__file__).resolve().parent.parent.joinpath('.env')
+        env_path = Path(__file__).resolve().parent.parent.parent.joinpath(
+            '.env')
         str_path = str(env_path)
         load_dotenv(dotenv_path=str_path)
 
@@ -143,11 +144,11 @@ class PolyBot(MPBotBase):
 
     def _mp_add_cogs(self) -> None:
         """Add all command cogs to the bot."""
-        self.add_cog(Where(self))
-        self.add_cog(Subscribe(self))
+        self.add_cog(where.Where(self))
+        self.add_cog(subscribe.Subscribe(self))
         self.add_cog(
-            Matchmaking(self,
-                        request=BeaconDataAccessDynamoDb(
+            matchmaking.Matchmaking(self,
+                        request=beacondb.BeaconDataAccessDynamoDb(
                             "WP_Beacons",
                             "ap-southeast-2",
                             "http://localhost:8000"
@@ -182,11 +183,11 @@ class PolyBot(MPBotBase):
         return True
 
 
-def main():
-    """Setup and run Polybot. Blocking, so not suitable for testing."""
-    polybot = PolyBot.instance(command_prefix="$")
-    polybot.run(polybot.mp_discord_client_token)
-
-
-if __name__ == '__main__':
-    main()
+# def main():
+#     """Setup and run Polybot. Blocking, so not suitable for testing."""
+#     polybot = PolyBot.instance(command_prefix="$")
+#     polybot.run(polybot.mp_discord_client_token)
+#
+#
+# if __name__ == '__main__':
+#     main()
