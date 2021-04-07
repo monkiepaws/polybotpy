@@ -54,7 +54,7 @@ class SubRole:
             A new SubRole object.
 
         """
-        converted_role = await commands.RoleConverter().convert(ctx, arg)
+        converted_role = await commands.RoleConverter().convert(ctx, arg.lower())
         subscribe_role = cls(ctx, converted_role)
         return subscribe_role.checked
 

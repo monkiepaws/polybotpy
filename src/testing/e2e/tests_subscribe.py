@@ -12,6 +12,7 @@ import src.testing.e2e.e2e_bot_test_case as e2e_bot_test_case
 class SubscribeTest(e2e_bot_test_case.E2EBotTest[str, Sequence[
     discord.Role]], ABC):
     """Specific subclass of E2EBotTest for testing Subscribe cog."""
+
     def fetch_own_roles(self):
         """Return a sequence of roles that an author of a message possesses."""
         return [role.name for role in self.message.author.roles]
@@ -53,7 +54,7 @@ class AddMultipleRolesTest(SubscribeTest):
         return "Subscribe should add multiple roles."
 
     async def arrange(self) -> str:
-        return f"{self.prefix}sub chun newrole"
+        return f"{self.prefix}sub Chun Newrole"
 
     async def act(self) -> Sequence[discord.Role]:
         return self.fetch_own_roles()
@@ -145,6 +146,44 @@ class ListReturnsRolesWithNoPermissionsTest(SubscribeTest):
         return len(self.actual) == 0
 
 
+class ListDoesNotShowEveryoneRole(SubscribeTest):
+    @property
+    def description(self) -> str:
+        return "Subscribe should not list the @everyone role."
+
+    async def arrange(self) -> str:
+        return f"{self.prefix}sub"
+
+    async def act(self) -> Sequence[discord.Role]:
+        # Get a cleaned description from Polybot's embed message.
+        message = await self.get_last_message()
+        description: str = message.embeds[0].description
+        cleaned_description = description.replace("*", "")
+
+        # From this description, separate into role names
+        role_names = cleaned_description.split("\n")
+        role_names_log_string = "\n".join(role_names)
+        logging.debug(f"Role Names in List:\n{role_names_log_string}\n")
+
+        # All roles in guild
+        # roles = self.channel.guild.roles
+        # # The value of the permissions of a role when it has no permissions.
+        # no_permissions = discord.Permissions.none()
+        # # Separate roles that exist from those that don't.
+        # existing_roles = [role for role in roles if role.name in role_names]
+        #
+        # # Filter banned roles, which are those that have greater than 0
+        # # permissions.
+        # banned_roles = [role.name for role in existing_roles
+        #                 if role.permissions != no_permissions]
+        # banned_roles_log_string = "\n".join(banned_roles)
+        # logging.debug(f"Banned Roles list:\n{banned_roles_log_string}\n")
+        return role_names
+
+    async def assert_that(self):
+        return "@everyone" not in self.actual
+
+
 class TestSubscribe(e2e_bot_test_case.E2EBotTestCase):
     @common.async_test
     async def test_add_adds_and_removes_single_role_if_valid(self):
@@ -165,6 +204,10 @@ class TestSubscribe(e2e_bot_test_case.E2EBotTestCase):
     @common.async_test
     async def test_list_returns_roles_with_no_permissions(self):
         await self.run_tests(ListReturnsRolesWithNoPermissionsTest)
+
+    @common.async_test
+    async def test_list_does_not_return_everyone_role(self):
+        await self.run_tests(ListDoesNotShowEveryoneRole)
 
 
 if __name__ == "__main__":
