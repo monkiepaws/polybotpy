@@ -1,0 +1,17 @@
+# place in /etc/systemd/system
+
+[Unit]
+Description=Polybot Discord Service
+Wants=network.target
+After=syslog.target network-online.target multi-user.target
+
+[Service]
+Type=simple
+User=polybot
+ExecStart=/usr/bin/sh /home/polybot/polybotpy/main.sh
+Restart=always
+RestartSec=10
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
