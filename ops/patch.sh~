@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# leave in ops folder
+
+POLYBOT_SERVICE_NAME=polybot_discord.service
+systemctl stop $POLYBOT_SERVICE_NAME
+yum -y update
+/usr/sbin/reboot --reboot

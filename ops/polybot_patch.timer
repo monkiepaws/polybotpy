@@ -1,0 +1,11 @@
+# place in /etc/systemd/system
+
+[Unit]
+Description=Polybot Weekly Patching
+
+[Timer]
+OnCalendar=Mon 18:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
